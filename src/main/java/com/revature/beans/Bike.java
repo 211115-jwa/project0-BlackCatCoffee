@@ -2,19 +2,18 @@ package com.revature.beans;
 
 public class Bike {
 	private String bikeModel;
-	private int frameSerialNumber;
+	private int id;
 	private String bikeType;
-	private String Manufacturer;
+	private String manufacturer;
 	private double frameWeight;
 	private double price;
 	
 	public Bike(){
-		frameSerialNumber = 0;
 		bikeModel = "Bike Model";
 		bikeType = "hybrid";
-		Manufacturer = "Manufacturer";
-		frameWeight = 0;
-		price = 0;
+		manufacturer = "Manufacturer";
+		frameWeight = 0.0;
+		price = 0.0;
 	}
 	
 	
@@ -28,13 +27,13 @@ public class Bike {
 	}
 
 
-	public int getframeSerialNumber() {
-		return frameSerialNumber;
+	public int getId() {
+		return id;
 	}
 
 
-	public void setframeSerialNumber(int frameSerialNumber) {
-		this.frameSerialNumber = frameSerialNumber;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 
@@ -47,11 +46,11 @@ public class Bike {
 	}
 
 	public String getManufacturer() {
-		return Manufacturer;
+		return manufacturer;
 	}
 
 	public void setManufacturer(String manufacturer) {
-		Manufacturer = manufacturer;
+		this.manufacturer = manufacturer;
 	}
 	
 
@@ -83,8 +82,8 @@ public class Bike {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((bikeModel == null) ? 0 : bikeModel.hashCode());
-		result = prime * result + frameSerialNumber;
-		result = prime * result + ((Manufacturer == null) ? 0 : Manufacturer.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
 		result = prime * result + ((bikeType == null) ? 0 : bikeType.hashCode());
 		result = (int) (prime * result + frameWeight);
 		result = (int) (prime * result + price);
@@ -105,17 +104,17 @@ public class Bike {
 					return false;
 			} else if (!bikeModel.equals(other.bikeModel))
 				return false;
-			if (frameSerialNumber != other.frameSerialNumber)
+			if (id != other.id)
 				return false;
 			if (bikeType == null) {
 				if (other.bikeType != null)
 					return false;
 			} else if (!bikeType.equals(other.bikeType))
 				return false;
-			if (Manufacturer == null) {
-				if (other.Manufacturer != null)
+			if (manufacturer == null) {
+				if (other.manufacturer != null)
 					return false;
-			} else if (!Manufacturer.equals(other.Manufacturer))
+			} else if (!manufacturer.equals(other.manufacturer))
 				return false;
 			if (frameWeight != other.frameWeight)
 				return false;
@@ -126,7 +125,7 @@ public class Bike {
 		
 		@Override
 		public String toString() {
-			return "Bike [frameSerialNumber=" + frameSerialNumber + ", bikeModel=" + bikeModel + ", bikeType=" + bikeType + ", Manufacturer=" + Manufacturer
+			return "Bike [id=" + id + ", bikeModel=" + bikeModel + ", bikeType=" + bikeType + ", manufacturer=" + manufacturer
 					+ ", frameWeight=" + frameWeight + ", price=" + price + "]";
 		}
 	}

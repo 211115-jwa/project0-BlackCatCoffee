@@ -1,8 +1,29 @@
 package com.revature.app;
 
 import io.javalin.Javalin;
+import io.javalin.http.HttpCode;
+
+// this static import is for the path and get/post/put methods
+import static io.javalin.apibuilder.ApiBuilder.*;
+
+import java.util.Set;
+
+import org.eclipse.jetty.http.HttpStatus;
+
+
+import com.revature.services.UserService;
+import com.revature.services.UserServiceImpl;
+import com.revature.beans.Bike;
+import com.revature.beans.Person;
+
+
+import com.revature.services.UserService;
+import com.revature.services.UserServiceImpl;
+
+import io.javalin.Javalin;
 
 public class BikeShopApp {
+	private static UserService userServ = new UserServiceImpl();
 
 	public static void main(String[] args) {
 		Javalin app = Javalin.create();
@@ -13,76 +34,91 @@ public class BikeShopApp {
 			// localhost:8080/bikes
 			path("/bikes", () -> {
 				get(ctx -> {
-					String bikeTypeSearch = ctx.queryParam("bikeType");
-
-					if (bikeTypeSearch != null && !"".equals(bikeTypeSearch)) {
-						set<Bike> bikesFound = userServ.searchAvailableBikesByType(bikeTypeSearch);
-						ctx.json(bikesFound);
+					Set<Bike> bikes = userServ.viewAvailableBikes();
+					if (bikes != null) {
+						ctx.json(bikes);
 					} else {
-						Set<Bike> availableBikes = userServ.viewAvailablePets();
-						ctx.json(availableBikes);
+						ctx.result("no bikes available");
 					}
 				});
 				post(ctx -> {
 					Bike newBike = ctx.bodyAsClass(Bike.class);
 					if (newBike != null) {
-						empServ.addNewBike(newBike);
+						userServ.addNewBike(newBike);
 						ctx.status(HttpStatus.CREATED_201);
 					} else {
 						ctx.status(HttpStatus.BAD_REQUEST_400);
 					}
 				});
-			});
-			path("/sold/{id}", () -> {
-				put(ctx -> {
-					try {
-						int bikeId = Integer.parseInt(ctx.pathparam("id"));
-						Person newOwner = ctx.bodyAsClass(Person.class);
+				path("/{id}", () -> {
+					
+					get(ctx -> {
 
-						newOwner = userServ.soldBike(frameSerialNumber, newOwner);
-						ctx.json(newOwner);
-					} catch (numberFormatException e) {
-						ctx.status(400);
-						ctx.result("Bike Frame ID must be a numerical value");
-					}
+							String bikeManufacturer = ctx.queryParam("manufacturer");
+							
+							if (bikeManufacturer != null) {
+								Set<Bike> bikes = userServ.getByBikeManufacturer(bikeManufacturer);
+								ctx.json(bikes);
+							}else {
+								// if they didn't put ?species
+								Set<Bike> bikesFound = userServ.viewAvailableBikes();
+								ctx.json(bikesFound);
+							}
+					});
+					put(ctx -> {
+						try {
+							int bikeId = Integer.parseInt(ctx.pathParam("id"));
+							Bike bikeToEdit = ctx.bodyAsClass(Bike.class);
+							if (bikeToEdit != null && bikeToEdit.getId() == bikeId) {
+								bikeToEdit = userServ.updateBike(bikeToEdit);
+								if (bikeToEdit != null) 
+									ctx.json(bikeToEdit);
+								else {
+									ctx.status(404);
+									ctx.result("No bike matches that Id");
+								}
+							}else 
+								ctx.status(HttpCode.CONFLICT);
+						 }catch (NumberFormatException e) {
+							ctx.status(400);
+							ctx.result("bike Id must be a numerical value.");
+						}
+					});
 				});
-
+				path("/bikes?manufacturer=", () -> {
+					get(ctx -> {
+						// checking if they did /pets?species=
+						String bikeManufacturer = ctx.queryParam("manufacturer");
+						// when using .equals with a String literal, put the
+						// String literal first because it prevents null pointer
+						// exceptions
+						if (bikeManufacturer != null && !"".equals(bikeManufacturer)) {
+							Set<Bike> bikesFound = userServ.getByBikeManufacturer(bikeManufacturer);
+							ctx.json(bikesFound);
+						} else {
+							// if they didn't put ?species
+							Set<Bike> bikesfound = userServ.viewAvailableBikes();
+							ctx.json(bikesfound);
+						}
+					});
+				});
+				path("/bikes?Model=", () -> {
+					get(ctx -> {
+						// checking if they did /pets?species=
+						String bikeModel = ctx.queryParam("bikeModel");
+						// when using .equals with a String literal, put the
+						// String literal first because it prevents null pointer
+						// exceptions
+						if (bikeModel != null && !"".equals(bikeModel)) {
+							Set<Bike> bikesFound = userServ.getByBikeModel(bikeModel);
+							ctx.json(bikesFound);
+						} else {
+							// if they didn't put ?species
+							Set<Bike> bikesFound = userServ.viewAvailableBikes();
+							ctx.json(bikesFound);
+						}
+					});
+				});
 			});
 		});
-		path("/{id", () -> {
-
-			get(ctx -> {
-				try {
-					int bikeId = Integer.parseInt(ctx.pathParam("id"));
-					Bike bike = empServ.getbikeById(frameSerialNumber);
-					if (bike != null)
-						ctx.json(bike);
-					else
-						ctx.status(404);
-				} catch (NumberFormatException e) {
-					ctx.status(400);
-					ctx.result("bike serial number must be a numeric value");
-				}
-			});
-
-			put(ctx -> {
-				try {
-					int bikeId = Integer.parseInt(ctx.pathParam("frameSerialNumber"));
-					bike bikeToEdit = ctx.bodyAsClass(Bike.class);
-					if (bikeToEdit != null && bikeToEdit.getIFrameSerialNumber() == frameSerialNumber) {
-						bikeToEdit = empServ.editBike(BikeToEdit);
-						if (bikeToEdit != null)
-							ctx.json(bikeToEdit);
-						else
-							ctx.status(404);
-					} else {
-						ctx.status(HttpCode.CONFLICT);
-					}
-				} catch (NumberFormatException e) {
-					ctx.status(400);
-					ctx.result("bike serial number must be a numeric value");
-				}
-			});
-		});
-	}
-}
+}}
