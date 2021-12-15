@@ -1,6 +1,6 @@
 package com.revature.data;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,5 +15,12 @@ public class BikeDAOTest {
 		Bike newBike = new Bike();
 		int generatedId = bikeDao.create(newBike);
 		assertNotEquals(0,generatedId);
+	}
+	
+	@Test
+	public void getByIdWhenIdExistsTest(int id) {
+		int idInput = 1;
+		Bike idOutput = bikeDao.getById(idInput);
+		assertEquals(idInput, idOutput.getById());
 	}
 }

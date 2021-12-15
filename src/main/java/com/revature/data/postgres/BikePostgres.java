@@ -45,8 +45,26 @@ public class BikePostgres implements BikeDAO {
 
 	@Override
 	public Bike getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Bike bike = null;
+		try (Connection conn = connUtil.getConnection()) {
+			String sql = "select * from pet where id=?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1,id);
+			
+			ResultSet resultSet = pStmt.executeQuery();
+			if (resultSet.next()) {
+				bike = new Bike();
+				bike.setId(id);
+				bike.setBikeModel(resultSet.getString("bike_model"));
+				bike.setManufacturer(resultSet.getString("manufacturer"));
+				bike.setFrameWeight(resultSet.getDouble("frame_weight"));
+				bike.setPrice(resultSet.getDouble("price"));
+
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return bike;
 	}
 
 	@Override

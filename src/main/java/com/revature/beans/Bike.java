@@ -27,7 +27,7 @@ public class Bike {
 	}
 
 
-	public int getId() {
+	public int getById() {
 		return id;
 	}
 
