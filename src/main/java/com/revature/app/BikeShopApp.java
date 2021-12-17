@@ -53,17 +53,17 @@ public class BikeShopApp {
 				path("/{id}", () -> {
 					
 					get(ctx -> {
-
-							String bikeManufacturer = ctx.queryParam("manufacturer");
+						try {
+							int bikeId = Integer.parseInt(ctx.pathParam("id"));
+							Bike bike = userServ.getBikeById(bikeId);
+							if (bike != null)
+								ctx.json(bike);
+							else
+								ctx.status(404);
+						}catch (NumberFormatException e) {
+							ctx.status(400);
+						}
 							
-							if (bikeManufacturer != null) {
-								Set<Bike> bikes = userServ.getByBikeManufacturer(bikeManufacturer);
-								ctx.json(bikes);
-							}else {
-								// if they didn't put ?species
-								Set<Bike> bikesFound = userServ.viewAvailableBikes();
-								ctx.json(bikesFound);
-							}
 					});
 					put(ctx -> {
 						try {
