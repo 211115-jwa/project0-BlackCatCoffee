@@ -8,7 +8,8 @@ create table bike (
 	id serial primary key,
 	bike_type varchar(30) not null,
 	manufacturer varchar(30) not null,
-	frame_weight decimal not null,
-	price decimal not null
+	frame_weight integer not null,
+	price integer not null
 );
 
+commit;

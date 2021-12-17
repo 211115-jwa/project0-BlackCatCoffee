@@ -5,15 +5,15 @@ public class Bike {
 	private int id;
 	private String bikeType;
 	private String manufacturer;
-	private double frameWeight;
-	private double price;
+	private int frameWeight;
+	private int price;
 	
 	public Bike(){
 		bikeModel = "Bike Model";
 		bikeType = "hybrid";
 		manufacturer = "Manufacturer";
-		frameWeight = 0.0;
-		price = 0.0;
+		frameWeight = 0;
+		price = 0;
 	}
 	
 	
@@ -27,7 +27,7 @@ public class Bike {
 	}
 
 
-	public int getById() {
+	public int getId() {
 		return id;
 	}
 
@@ -54,22 +54,22 @@ public class Bike {
 	}
 	
 
-	public double getFrameWeight() {
+	public int getFrameWeight() {
 		return frameWeight;
 	}
 
 
-	public void setFrameWeight(double frameWeight) {
+	public void setFrameWeight(int frameWeight) {
 		this.frameWeight = frameWeight;
 	}
 
 
-	public double getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
 
-	public void setPrice(double price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
@@ -85,8 +85,8 @@ public class Bike {
 		result = prime * result + id;
 		result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
 		result = prime * result + ((bikeType == null) ? 0 : bikeType.hashCode());
-		result = (int) (prime * result + frameWeight);
-		result = (int) (prime * result + price);
+		result = prime * result + frameWeight;
+		result = prime * result + price;
 		return result;
 	}
 		

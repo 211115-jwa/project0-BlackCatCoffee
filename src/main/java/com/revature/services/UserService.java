@@ -12,7 +12,7 @@ public interface UserService {
 	public Person logIn(String username, String password);
 	public Person updateUser(Person userToUpdate);
 */
-	public Bike addNewBike(Bike newBike);
+	public int addNewBike(Bike newBike);
 	public Bike updateBike(Bike BikeToEdit);
 	public Bike getBikeById(int id);
 	public Set<Bike> viewAvailableBikes();

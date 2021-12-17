@@ -29,39 +29,39 @@ public class UserServiceImpl implements UserService {
 	}
 */
 	@Override
-	public Bike addNewBike(Bike newBike) {
-		// TODO Auto-generated method stub
-		return null;
+	public int addNewBike(Bike newBike) {
+		return bikeDao.create(newBike);
 	}
 
 	@Override
-	public Bike updateBike(Bike BikeToEdit) {
-		// TODO Auto-generated method stub
+	public Bike updateBike(Bike bikeToEdit) {
+		Bike bikeFromDatabase = bikeDao.getById(bikeToEdit.getId());
+		if (bikeFromDatabase != null) {
+			bikeDao.update(bikeToEdit);
+			return bikeDao.getById(bikeToEdit.getId());
+		}
 		return null;
 	}
 
 	@Override
 	public Bike getBikeById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return bikeDao.getById(id);
 	}
 
 	@Override
 	public Set<Bike> viewAvailableBikes() {
-		// TODO Auto-generated method stub
-		return null;
+		return bikeDao.getAll();
 	}
 
 	@Override
-	public Set<Bike> getByBikeManufacturer(String Manufacturer) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Bike> getByBikeManufacturer(String manufacturer) {
+		return bikeDao.getByBikeManufacturer(manufacturer);
+		
 	}
 
 	@Override
 	public Set<Bike> getByBikeModel(String bikeModel) {
-		// TODO Auto-generated method stub
-		return null;
+		return bikeDao.getByBikeModel(bikeModel);
 	}
 
 	
