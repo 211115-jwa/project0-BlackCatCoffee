@@ -149,13 +149,13 @@ public class BikePostgres implements BikeDAO {
 	}
 
 	@Override
-	public Set<Bike> getByBikeManufacturer(String Manufacturer) {
+	public Set<Bike> getByBikeManufacturer(String manufacturer) {
 		Set<Bike> byManufacturer = new HashSet<>();
 
 		try (Connection conn = connUtil.getConnection()) {
 			String sql = "select * from bike where manufacturer=?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, sql);
+			pStmt.setString(1, manufacturer);
 
 			ResultSet resultSet = pStmt.executeQuery();
 
@@ -183,7 +183,7 @@ public class BikePostgres implements BikeDAO {
 		try (Connection conn = connUtil.getConnection()) {
 			String sql = "select * from bike where bike_model=?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, sql);
+			pStmt.setString(1, bikeModel);
 
 			ResultSet resultSet = pStmt.executeQuery();
 

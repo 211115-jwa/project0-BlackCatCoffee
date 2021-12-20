@@ -34,11 +34,22 @@ public class BikeShopApp {
 			// localhost:8080/bikes
 			path("/bikes", () -> {
 				get(ctx -> {
-					Set<Bike> bikes = userServ.viewAvailableBikes();
-					if (bikes != null) {
-						ctx.json(bikes);
-					} else {
+					String bikeModel = ctx.queryParam("bike_model");
+					String bikeManufacturer = ctx.queryParam("manufacturer");
+					if (bikeManufacturer != null && !"".equals(bikeManufacturer)) {
+						Set<Bike> bikesFound = userServ.getByBikeManufacturer(bikeManufacturer);
+						ctx.json(bikesFound);
+						
+					}else if(bikeModel != null && !"".equals(bikeModel)) {
+							Set<Bike> bikesFound = userServ.getByBikeModel(bikeModel);
+							ctx.json(bikesFound);
+					}else {
+						Set<Bike> bikes = userServ.viewAvailableBikes();
+						if (bikes != null) {
+							ctx.json(bikes);
+						} else {
 						ctx.result("no bikes available");
+					}
 					}
 				});
 				post(ctx -> {
@@ -85,32 +96,8 @@ public class BikeShopApp {
 						}
 					});
 				});
-				path("/bikes?manufacturer=", () -> {
-					get(ctx -> {
-						// checking if they did /pets?species=
-						String bikeManufacturer = ctx.queryParam("manufacturer");
-						// when using .equals with a String literal, put the
-						// String literal first because it prevents null pointer
-						// exceptions
-						if (bikeManufacturer != null && !"".equals(bikeManufacturer)) {
-							Set<Bike> bikesFound = userServ.getByBikeManufacturer(bikeManufacturer);
-							ctx.json(bikesFound);
-						}
-					});
-				});
-				path("/bikes?Model=", () -> {
-					get(ctx -> {
-						// checking if they did /pets?species=
-						String bikeModel = ctx.queryParam("bikeModel");
-						// when using .equals with a String literal, put the
-						// String literal first because it prevents null pointer
-						// exceptions
-						if (bikeModel != null && !"".equals(bikeModel)) {
-							Set<Bike> bikesFound = userServ.getByBikeModel(bikeModel);
-							ctx.json(bikesFound);
-						}
-					});
-				});
+				
+				
 			});
 		});
 }}
