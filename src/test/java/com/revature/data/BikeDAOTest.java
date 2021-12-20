@@ -44,9 +44,10 @@ public class BikeDAOTest {
 	@Test
 	public void updateBikeTest() {
 		Bike bikeToUpdate = bikeDao.getById(1);
-		bikeToUpdate.setBikeType("road");
+		
+		bikeToUpdate.setBikeType("dfgf");
 		bikeDao.update(bikeToUpdate);
-		assertEquals("road",bikeDao.getById(1).getBikeType());
+		assertEquals("dfgf",bikeDao.getById(1).getBikeType());
 	}
 	
 	
@@ -54,9 +55,10 @@ public class BikeDAOTest {
 	@Test
 	public void deleteBikeTest() {
 		Bike idInput = new Bike();
-		Bike bikeOutput = bikeDao.getById(idInput.getId());
-		bikeDao.delete(bikeOutput);
-		assertNull(bikeOutput);
+		Bike idOutput = bikeDao.getById(idInput.getId());
+		bikeDao.delete(idOutput);
+		
+		assertNull(idInput);
 	}
 
 	

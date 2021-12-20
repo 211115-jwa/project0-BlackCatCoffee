@@ -138,9 +138,10 @@ public class BikePostgres implements BikeDAO {
 
 			int rowsAffected = pStmt.executeUpdate();
 
-			if (rowsAffected == 1) 
+			if (rowsAffected <= 1) 
 				conn.commit();
 			else 
+				
 				conn.rollback();
 		}catch (SQLException e) {
 			e.printStackTrace();

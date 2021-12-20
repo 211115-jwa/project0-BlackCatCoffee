@@ -95,10 +95,6 @@ public class BikeShopApp {
 						if (bikeManufacturer != null && !"".equals(bikeManufacturer)) {
 							Set<Bike> bikesFound = userServ.getByBikeManufacturer(bikeManufacturer);
 							ctx.json(bikesFound);
-						} else {
-							// if they didn't put ?species
-							Set<Bike> bikesfound = userServ.viewAvailableBikes();
-							ctx.json(bikesfound);
 						}
 					});
 				});
@@ -111,10 +107,6 @@ public class BikeShopApp {
 						// exceptions
 						if (bikeModel != null && !"".equals(bikeModel)) {
 							Set<Bike> bikesFound = userServ.getByBikeModel(bikeModel);
-							ctx.json(bikesFound);
-						} else {
-							// if they didn't put ?species
-							Set<Bike> bikesFound = userServ.viewAvailableBikes();
 							ctx.json(bikesFound);
 						}
 					});
